@@ -22,17 +22,17 @@ In this project, I approached with 2 methods for a vehicle detection. HOG + SVM 
   
 ## Files
   
-> YOLO ver
+> YOLO ver  
 [`main.py`](main.py) : main code   
 [`tiny.py`](tiny.py) : main code of tiny yolo   
-[`yolo_small.py`](yolo_small.py) : yolo model composition
-[`yolo_tiny.py`](yolo_tiny.py) : tiny yolo model composition
+[`yolo_small.py`](yolo_small.py) : yolo model composition  
+[`yolo_tiny.py`](yolo_tiny.py) : tiny yolo model composition  
 [`calibration.py`](calibration.py) : get calibration matrix  
 [`threshold.py`](threshold.py) : sobel edge & hls color  
 [`finding_lines.py`](finding_lines.py) : find & draw lane lines with sliding widow search  
 
   
-> HOG + SVM ver
+> HOG + SVM ver  
 [`main_hog.py`](main_hog.py) : main code   
 [`svc_save.py`](svc_save.py) : extract feature & save SVM classifier result   
 [`feature_extract.py`](feature_extract.py) : hog & color feature extraction  
@@ -40,7 +40,7 @@ In this project, I approached with 2 methods for a vehicle detection. HOG + SVM 
 [`svc_save.p`](svc_save.p) : saved SVM result   
 ---
 
-##The goals / steps of this project are the following:
+## The goals / steps of this project are the following:
 
 * Perform a Histogram of Oriented Gradients (HOG) feature extraction on a labeled training set of images and train a classifier Linear SVM classifier
 * Optionally, you can also apply a color transform and append binned color features, as well as histograms of color, to your HOG feature vector. 
@@ -52,14 +52,14 @@ In this project, I approached with 2 methods for a vehicle detection. HOG + SVM 
 
 ---
 
-###Dataset  
-In this project, I used the labeled data for [vehicle](https://s3.amazonaws.com/udacity-sdc/Vehicle_Tracking/vehicles.zip) and [non-vehicle](https://s3.amazonaws.com/udacity-sdc/Vehicle_Tracking/non-vehicles.zip) examples to train your classifier.  These example images come from a combination of the [GTI vehicle image database](http://www.gti.ssr.upm.es/data/Vehicle_database.html), the [KITTI vision benchmark suite](http://www.cvlibs.net/datasets/kitti/)  
-
+### Dataset  
+In this project, I used the labeled data for [vehicle](https://s3.amazonaws.com/udacity-sdc/Vehicle_Tracking/vehicles.zip) and [non-vehicle](https://s3.amazonaws.com/udacity-sdc/Vehicle_Tracking/non-vehicles.zip) examples to train your classifier.  These example images come from a combination of the [GTI vehicle image database](http://www.gti.ssr.upm.es/data/Vehicle_database.html), the [KITTI vision benchmark suite](http://www.cvlibs.net/datasets/kitti/).  
+  
 <p align="center">
-  <img src="./images/dataset.png" alt="dataset" width="640">
+  <img src="./images/dataset.PNG" alt="dataset" width="640">
 </p>
   
-###Histogram of Oriented Gradients (HOG)
+### Histogram of Oriented Gradients (HOG)
 
 #### HOG feature Extraction
 
@@ -119,9 +119,9 @@ svc = LinearSVC()
 svc.fit(X_train, y_train)
 ```  
   
-And according to `svc.score(X_test, y_test)`, my Testest Accuracy was 0.9896  
+And according to `svc.score(X_test, y_test)`, my Testest Accuracy was *0.9896*  
 
-###Sliding Window Search  
+### Sliding Window Search  
   
 The code for this step is contained in the [`find_car.py`](find_car.py) 
 I used 3 square window sizes of 128x128, 96x96, 64x64 pixels size. And each adjacent sliding windows have an ovelap of 75%. Also  upper half of image and lower bonnet's position are ignored to search vehicles. Each windows check the Hog features and compared with SVM result.  
@@ -130,7 +130,7 @@ I used 3 square window sizes of 128x128, 96x96, 64x64 pixels size. And each adja
   <img src="./images/window.png" alt="window" width="640">
 </p>
 
-###Heatmap  
+### Heatmap  
   
 During sliding window search, there are many false positives and Multiple Detections. To resolve this problem I used heatmap. Simply added "heat" (+=1) for all pixels within windows where a positive detection is reported by your classifier.  
   
@@ -142,16 +142,16 @@ This is my result of test images.
 
 ---
 
-##Extra Work (YOLO & add Lane finding result)
+## Extra Works (YOLO & add Lane finding result)
 
 ### YOLO  
   
 When I use a SVM + Hog method, the elapsed time for a vehicle detection was about *`4.28`* second per 1 frame. detection result was not bad but we never detect vehicles in real-time with 4.28s/frame. That's why I searched a YOLO. 
-[YOLO(You Only Look it Once)](https://pjreddie.com/darknet/yolo/) is famous real-time object detection technique. Originally YOLO is codded with C language but I found a [tensorflow version of YOLO](https://github.com/gliese581gg/YOLO_tensorflow) and I revised it.  
+[YOLO](https://pjreddie.com/darknet/yolo/)(You Only Look it Once) is famous real-time object detection technique. Originally YOLO is codded with C language but I found a [tensorflow version of YOLO](https://github.com/gliese581gg/YOLO_tensorflow) and I revised it.  
 My code does not support training. Used [darknet](https://pjreddie.com/darknet/yolo/)'s weight file. On average, I could get 0.035 second per 1 frame with YOLO_small(GPU : GTX 980Ti) and about *`0.025`* second per frame in tiny YOLO model.   
   
 <p align="center">
-  <img src="./images/yolo.png" alt="yolo" width="640">
+  <img src="./images/yolo.PNG" alt="yolo" width="640">
 </p>
   
 Yolo's approach is really impressive. Prior detection systems(e.g. faster-R-CNN) apply the model to an image at multiple locations and scales. High scoring regions of the image are considered detections. but YOLO applies a single neural network to the full image. This network divides the image into regions and predicts bounding boxes and probabilities for each region. These bounding boxes are weighted by the predicted probabilities.  
@@ -162,7 +162,7 @@ To understand how yolo works, please watch this [youtube video](https://www.yout
 By using YOLO, i could real-time detect vehicles in video. To check a real-time lane-finding & vehicle detection, I merged this project with [advanced lane finding project](https://github.com/windowsub0406/Advanced-lane-finding). This is the result.  
 
 <p align="center">
-  <img src="./images/merge.png" alt="merge" width="480">
+  <img src="./images/merge.jpg" alt="merge" width="480">
 </p>
 
 ## Result
@@ -175,7 +175,7 @@ By using YOLO, i could real-time detect vehicles in video. To check a real-time 
 
 ---
 
-##Reflection
+## Reflection
 
 I could learn and implement SVM classifier and yolo. Before starting this project, I had decided to use a YOLO for vehicle detection because I was really interested in YOLO. But I did't have experience about SVM-based detection and wondered the result. That's why I used both methods in this project. SVM classifier could detect vehicle well but the elapsed time was terrible. To search a position of object, I needed to search almost every frame using sliding window search. But I could resolve it by using YOLO.  
 In this project, I didn't retrain a model and used tiny YOLO. So, according to my result, it couldn't detect small vehicles and showed some of false positives. For a best result, I'll fine-tune yolo or ssd method to mine. That's my future work.
